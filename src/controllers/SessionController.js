@@ -10,7 +10,6 @@ class SessionController {
 
       return res.status(200).json({ user, token });
     } catch (error) {
-      console.log(error)
       return res.status(400).send({ error: error.message });
     }
   }

@@ -5,6 +5,10 @@ class UserRepository {
     return await User.findOne({ raw: true, where: { login } });
   }
 
+  findById = async ({ user_id }) => {
+    return await User.findByPk(user_id, { raw: true });
+  }
+
   create = async ({ name, login, password, role }) => {
     return await User.create({
       name,

@@ -17,7 +17,7 @@ class UserController {
 
       return res.status(200).json(createdUser);
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).send({ error: error.message });
     }
   }
 

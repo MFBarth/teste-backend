@@ -27,6 +27,11 @@ class User extends Model {
       }
     });
   }
+
+  static associate(models) {
+    this.hasMany(models.User, { foreignKey: 'user_id', as: 'movies' });
+    this.hasMany(models.User, { foreignKey: 'user_id', as: 'votes' });
+  }
 }
 
 module.exports = User;
