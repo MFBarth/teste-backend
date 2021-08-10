@@ -6,5 +6,7 @@ const movieRouter = Router();
 const movieController = new MovieController();
 
 movieRouter.post('/', movieController.create);
+movieRouter.get('/search', movieController.search);
+movieRouter.get('/details/:movie_id', movieController.details);
 
 module.exports = movieRouter;

@@ -1,9 +1,6 @@
-const jwt = require('jsonwebtoken');
-
 const UserRepository = require('../repositories/UserRepository');
 const VoteRepository = require('../repositories/VoteRepository');
 const MovieRepository = require('../repositories/MovieRepository');
-const authConfig = require('../config/auth');
 
 class CreateVoteService {
 
@@ -21,17 +18,27 @@ class CreateVoteService {
 
     const voteRepository = new VoteRepository();
 
-    const storedVote = await voteRepository.create({
-      vote,
+    const alredyVoted = await voteRepository.findUserAlredyVoteinMove({
       user_id,
       movie_id
     });
 
-    return {
-      Vote: {
-        id: storedVote.id,
-        vote: storedVote.vote,
-      },
+    if (alredyVoted) {
+      const udatedVote = await voteRepository.update({
+        vote,
+        voteId: alredyVoted.id
+      });
+
+      return { Vote: udatedVote }
+
+    } else {
+      const storedVote = await voteRepository.create({
+        vote,
+        user_id,
+        movie_id
+      });
+
+      return { Vote: storedVote }
     }
   }
 }

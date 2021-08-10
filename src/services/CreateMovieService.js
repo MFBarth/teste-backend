@@ -1,8 +1,5 @@
-const jwt = require('jsonwebtoken');
-
 const UserRepository = require('../repositories/UserRepository');
 const MovieRepository = require('../repositories/MovieRepository');
-const authConfig = require('../config/auth');
 
 class CreateUserService {
 

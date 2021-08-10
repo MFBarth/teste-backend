@@ -1,4 +1,6 @@
 const CreateMovieService = require('../services/CreateMovieService');
+const SearchMovieService = require('../services/SearchMovieService');
+const DetailMovieService = require('../services/DetailMovieService');
 
 class MovieController {
 
@@ -17,6 +19,39 @@ class MovieController {
       });
 
       return res.status(200).json(createdMovie);
+    } catch (error) {
+      return res.status(400).send({ error: error.message });
+    }
+  }
+
+  search = async (req, res) => {
+    const { name, director, gender, actors } = req.query;
+    const searchMovieService = new SearchMovieService();
+
+    try {
+      const foundMovies = await searchMovieService.execute({
+        name,
+        director,
+        gender,
+        actors: actors && JSON.parse(actors),
+      });
+
+      return res.status(200).json(foundMovies);
+    } catch (error) {
+      return res.status(400).send({ error: error.message });
+    }
+  }
+
+  details = async (req, res) => {
+    const { movie_id } = req.params;
+    console.log(movie_id)
+
+    const detailMovieService = new DetailMovieService();
+
+    try {
+      const foundMovies = await detailMovieService.execute({ movie_id });
+
+      return res.status(200).json(foundMovies);
     } catch (error) {
       return res.status(400).send({ error: error.message });
     }
