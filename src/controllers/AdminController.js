@@ -6,6 +6,7 @@ class AdminController {
 
   create = async (req, res) => {
     const { name, login, password } = req.body;
+    const { id } = req.user;
     const createUserService = new CreateUserService();
 
     try {
@@ -13,7 +14,8 @@ class AdminController {
         name,
         login,
         password,
-        role: 'admin'
+        role: 'admin',
+        user_id: id
       });
 
       return res.status(200).json(createdUser);
@@ -24,6 +26,7 @@ class AdminController {
 
   update = async (req, res) => {
     const { newName, login, newPassword } = req.body;
+    const { id } = req.user;
     const updateUserService = new UpdateUserService();
 
     try {
@@ -31,20 +34,27 @@ class AdminController {
         newName,
         login,
         newPassword,
+        role: 'admin',
+        user_id: id
       });
 
       return res.status(200).json(updateUser);
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).send({ error: error.message });
     }
   }
 
   delete = async (req, res) => {
     const { login } = req.body;
+    const { id } = req.user;
     const deleteUserService = new DeleteUserService();
 
     try {
-      const deletedUser = await deleteUserService.execute({ login });
+      const deletedUser = await deleteUserService.execute({
+        login,
+        role: 'admin',
+        user_id: id
+      });
 
       return res.status(200).json(
         {
@@ -53,7 +63,7 @@ class AdminController {
         }
       );
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).send({ error: error.message });
     }
   }
 }

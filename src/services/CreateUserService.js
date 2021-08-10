@@ -5,8 +5,13 @@ const authConfig = require('../config/auth');
 
 class CreateUserService {
 
-  execute = async ({ name, login, password, role }) => {
+  execute = async ({ name, login, password, role, user_id }) => {
     const userRepository = new UserRepository();
+    const userFound = await userRepository.findById({ user_id });
+
+    if (userFound.role !== 'admin' && role !== 'voter') {
+      throw new Error('Only Administrators can perform this action');
+    }
 
     if (await userRepository.findByLogin({ login })) {
       throw new Error('Login address already used');

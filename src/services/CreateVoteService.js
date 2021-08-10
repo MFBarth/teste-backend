@@ -7,13 +7,22 @@ class CreateVoteService {
   execute = async ({ vote, user_id, movie_id }) => {
     const userRepository = new UserRepository();
     const movieRepository = new MovieRepository();
+    const userFound = await userRepository.findById({ user_id });
 
-    if (!await userRepository.findById({ user_id })) {
+    if (!userFound) {
       throw new Error('User not found');
+    }
+
+    if (userFound.role !== 'voter') {
+      throw new Error('Only common users can vote ');
     }
 
     if (!await movieRepository.findById({ movie_id })) {
       throw new Error('Movie not found');
+    }
+
+    if (vote < 0 || vote > 4) {
+      throw new Error('Vote must be between 0-4 ');
     }
 
     const voteRepository = new VoteRepository();

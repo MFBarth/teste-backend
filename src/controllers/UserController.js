@@ -1,10 +1,12 @@
 const CreateUserService = require('../services/CreateUserService');
 const UpdateUserService = require('../services/UpdateUserService');
+const DeleteUserService = require('../services/DeleteUserService');
 
 class UserController {
 
   create = async (req, res) => {
     const { name, login, password } = req.body;
+    const { id } = req.user;
     const createUserService = new CreateUserService();
 
     try {
@@ -12,7 +14,8 @@ class UserController {
         name,
         login,
         password,
-        role: 'voter'
+        role: 'voter',
+        user_id: id,
       });
 
       return res.status(200).json(createdUser);
@@ -23,6 +26,7 @@ class UserController {
 
   update = async (req, res) => {
     const { newName, login, newPassword } = req.body;
+    const { id } = req.user;
     const updateUserService = new UpdateUserService();
 
     try {
@@ -30,6 +34,8 @@ class UserController {
         newName,
         login,
         newPassword,
+        role: 'voter',
+        user_id: id
       });
 
       return res.status(200).json(updateUser);
@@ -40,17 +46,24 @@ class UserController {
 
   delete = async (req, res) => {
     const { login } = req.body;
+    const { id } = req.user;
     const deleteUserService = new DeleteUserService();
 
     try {
-      const deletedUser = await deleteUserService.execute({ login });
+      const deletedUser = await deleteUserService.execute({
+        login,
+        role: 'voter',
+        user_id: id
+      });
 
       return res.status(200).json(
-        { message: 'User disabled with success' },
-        deletedUser
+        {
+          message: 'User disabled with success',
+          deletedUser
+        }
       );
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).send({ error: error.message });
     }
   }
 }

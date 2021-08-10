@@ -44,7 +44,6 @@ class MovieController {
 
   details = async (req, res) => {
     const { movie_id } = req.params;
-    console.log(movie_id)
 
     const detailMovieService = new DetailMovieService();
 
