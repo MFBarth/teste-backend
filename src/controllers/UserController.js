@@ -37,6 +37,22 @@ class UserController {
       return res.status(400).send({ error: error.message });
     }
   }
+
+  delete = async (req, res) => {
+    const { login } = req.body;
+    const deleteUserService = new DeleteUserService();
+
+    try {
+      const deletedUser = await deleteUserService.execute({ login });
+
+      return res.status(200).json(
+        { message: 'User disabled with success' },
+        deletedUser
+      );
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  }
 }
 
 module.exports = UserController;

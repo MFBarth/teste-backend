@@ -1,5 +1,6 @@
 const CreateUserService = require('../services/CreateUserService');
 const UpdateUserService = require('../services/UpdateUserService');
+const DeleteUserService = require('../services/DeleteUserService');
 
 class AdminController {
 
@@ -33,6 +34,24 @@ class AdminController {
       });
 
       return res.status(200).json(updateUser);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  }
+
+  delete = async (req, res) => {
+    const { login } = req.body;
+    const deleteUserService = new DeleteUserService();
+
+    try {
+      const deletedUser = await deleteUserService.execute({ login });
+
+      return res.status(200).json(
+        {
+          message: 'User disabled with success',
+          deletedUser
+        }
+      );
     } catch (error) {
       return res.status(400).send(error);
     }

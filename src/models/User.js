@@ -15,6 +15,7 @@ class User extends Model {
         login: DataTypes.STRING,
         password: DataTypes.STRING,
         role: DataTypes.STRING,
+        active: DataTypes.BOOLEAN
       },
       {
         sequelize: connection,

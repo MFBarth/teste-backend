@@ -7,5 +7,6 @@ const admincontroller = new AdminController();
 
 adminRouter.post('/', admincontroller.create);
 adminRouter.put('/', admincontroller.update);
+adminRouter.put('/delete', admincontroller.delete);
 
 module.exports = adminRouter;

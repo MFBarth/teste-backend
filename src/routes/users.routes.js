@@ -7,5 +7,6 @@ const userController = new UserController();
 
 usersRouter.post('/', userController.create);
 usersRouter.put('/', userController.update);
+usersRouter.put('/delete', userController.delete);
 
 module.exports = usersRouter;

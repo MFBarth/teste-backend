@@ -9,7 +9,7 @@ class CreateUserService {
     const userRepository = new UserRepository();
 
     if (await userRepository.findByLogin({ login })) {
-      throw new Error('Email address already used');
+      throw new Error('Login address already used');
     }
 
     const storedUser = await userRepository.create({
