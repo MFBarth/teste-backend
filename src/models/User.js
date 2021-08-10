@@ -6,6 +6,11 @@ class User extends Model {
   static init(connection) {
     super.init(
       {
+        id: {
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
+          primaryKey: true,
+        },
         name: DataTypes.STRING,
         login: DataTypes.STRING,
         password: DataTypes.STRING,
@@ -21,10 +26,6 @@ class User extends Model {
         user.password = await bcrypt.hash(user.password, 8);
       }
     });
-  }
-
-  checkPassword(password) {
-    return bcrypt.compare(password, this.password);
   }
 }
 
